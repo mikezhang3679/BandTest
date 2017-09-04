@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/device_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/device_name_size" />
+
+    <TextView
+        android:id="@+id/device_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/device_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="@string/not_connected"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/test_result"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:gravity="center"
+        android:textSize="@dimen/result_size" />
+
+    <Button
+        android:id="@+id/changeDateBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/test_result"
+        android:text="@string/change_date"
+        android:layout_margin="10dp"/>
+
+    <Button
+        android:id="@+id/findBand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/test_result"
+        android:text="@string/find_band"
+        android:layout_toRightOf="@id/changeDateBtn"
+        android:layout_margin="10dp"/>
+    <Button
+        android:id="@+id/refreshData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/test_result"
+        android:text="@string/refresh_data"
+        android:layout_toRightOf="@id/findBand"
+        android:layout_margin="10dp"/>
+
+
+    <TextView
+        android:id="@+id/dateTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/changeDateBtn"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@android:color/black" />
+
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dateTxt"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/stepsTxt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Steps -  0stp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/distanceTxt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Distance KM -  0km"
+            android:layout_marginTop="10dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/burntCalariesTxt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Burnt calories -  0kal"
+            android:layout_marginTop="10dp"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/setReminderBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="Set Reminder "
+        />
+
+
+
+    <GridView
+        android:id="@+id/gridView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_weight="1"
+        android:numColumns="3"
+        android:verticalSpacing="10dp"
+        android:visibility="gone">
+
+    </GridView>
+
+
+</RelativeLayout>
