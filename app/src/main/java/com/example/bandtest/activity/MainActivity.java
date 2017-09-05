@@ -221,10 +221,11 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
                 invalidateOptionsMenu();
                 mBluetoothLeService.close();
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+                Log.d(TAG, "ACTION_GATT_SERVICES_DISCOVERED: ");
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 final byte[] txValue = intent
                         .getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
-                Log.i("BluetoothLeService", "Received command" + DataHandlerUtils.bytesToHexStr(txValue));
+                Log.i(TAG, "Received command" + DataHandlerUtils.bytesToHexStr(txValue));
                 List<Integer> datas = DataHandlerUtils.bytesToArrayList(txValue);
                 Log.i(TAG, datas.toString());
                 //RSSI
@@ -289,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
                 float distance;
                 //The first type of data------------------------------------------------------------
                 if (datas.get(0) == 0xAB && datas.get(4) == 0x51 && datas.get(5) == 0x08) {
-                    Log.i(TAG,"steps calories and sleep data current");
+                    Log.d(TAG,"steps calories and sleep data current");
 
                     steps = (datas.get(6) << 16) + (datas.get(7) << 8) + datas.get(8);
                     distance = (steps * 0.7f)/1000;//If the user does not tell you his stride, by default he walked 0.7m every step
@@ -305,24 +306,24 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
                 }
                 //The second type of data-----------------------------------------------------------
                 if (datas.get(0) == 0xAB && datas.get(4) == 0x51 && datas.get(5) == 0x20){//Hourly
-                    Log.i(TAG,"the steps, calories, heart rate, blood oxygen,blood pressure data from hourly measure");
+                    Log.d(TAG,"the steps, calories, heart rate, blood oxygen,blood pressure data from hourly measure");
 
                 }
                 if (datas.get(0) == 0){
-                    Log.i(TAG,"second packet data from hourly measure");
+                    Log.d(TAG,"second packet data from hourly measure");
 
                 }
 
                 //The third type of data------------------------------------------------------------
                 if ((datas.get(0) == 0xAB && datas.get(4) == 0x51)){
                     if (datas.get(5) == 0x11){
-                        Log.i(TAG,"the Heart rate data from band measure");
+                        Log.d(TAG,"the Heart rate data from band measure");
 
                     }else if (datas.get(5) == 0x12){
-                        Log.i(TAG,"the Blood oxygen data from band measure");
+                        Log.d(TAG,"the Blood oxygen data from band measure");
 
                     }else if (datas.get(5) == 0x14){
-                        Log.i(TAG,"the Blood pressure data from band measure");
+                        Log.d(TAG,"the Blood pressure data from band measure");
 
                     }
                 }
