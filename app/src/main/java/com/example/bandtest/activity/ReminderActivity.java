@@ -15,8 +15,6 @@ import android.widget.EditText;
 
 import com.example.bandtest.R;
 import com.example.bandtest.command.CommandManager;
-import com.example.bandtest.db.DataHelper;
-import com.example.bandtest.db.DataInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +36,6 @@ public class ReminderActivity extends AppCompatActivity implements View.OnClickL
         mContext = ReminderActivity.this;
         manager = CommandManager.getInstance(this);
         initView();
-
-
     }
 
     public void initView() {
