@@ -26,6 +26,8 @@ import android.widget.Toast;
 import com.example.bandtest.App;
 import com.example.bandtest.R;
 import com.example.bandtest.command.CommandManager;
+import com.example.bandtest.db.DataHelper;
+import com.example.bandtest.db.DataInfo;
 import com.example.bandtest.fragment.CustomDateDialogFragment;
 import com.example.bandtest.service.BluetoothLeService;
 import com.example.bandtest.utils.DataHandlerUtils;
@@ -91,6 +93,20 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
         mDeviceAddress = SPUtils.getString(mContext, SPUtils.DEVICE_ADDRESS, "");
         mDeviceName = SPUtils.getString(mContext, SPUtils.DEVICE_NAME, "");
         bindBleService();
+
+        Log.i(TAG, DataInfo.CREATE_CURRENTDATA);
+        DataHelper dataHelper = DataHelper.getsInstance(this);
+
+        /*File file = new File("/data/data/" + this.getPackageName()
+                + "/databases", DataInfo.DATABASE_NAME);
+        if (!file.exists()) {
+            //数据库不存在，初始化数据
+          Toast.makeText(this,"数据库不存在",Toast.LENGTH_SHORT).show();
+        } else {
+            //数据库存在，更新数据
+            Toast.makeText(this,"数据库存在",Toast.LENGTH_SHORT).show();
+
+        }*/
 
     }
 

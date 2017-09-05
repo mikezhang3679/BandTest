@@ -161,6 +161,7 @@ public class DeviceScanActivity extends AppCompatActivity {
         super.onPause();
         scanLeDevice(false);
         mLeDeviceListAdapter.clear();
+        mLeDeviceListAdapter.notifyDataSetChanged();
     }
 
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
@@ -226,6 +227,7 @@ public class DeviceScanActivity extends AppCompatActivity {
 
                 }
                 mLeDeviceListAdapter.clear();
+                mLeDeviceListAdapter.notifyDataSetChanged();
                 scanLeDevice(true);
                 break;
 
