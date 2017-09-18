@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.bandtest.App;
 import com.example.bandtest.R;
+import com.example.bandtest.bean.CurrentData;
 import com.example.bandtest.command.CommandManager;
 import com.example.bandtest.db.DataHelper;
 import com.example.bandtest.db.DataInfo;
@@ -36,6 +37,7 @@ import com.example.bandtest.utils.SPUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -77,12 +79,14 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
         }
     };
     private CommandManager manager;
+    private DataHelper dataHelper;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.i("zgy","onCreate--mainActivity");
         mContext = this;
         manager = CommandManager.getInstance(this);
 
@@ -95,7 +99,8 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
         bindBleService();
 
         Log.i(TAG, DataInfo.CREATE_CURRENTDATA);
-        DataHelper dataHelper = DataHelper.getsInstance(this);
+        dataHelper = DataHelper.getsInstance(this);
+//        SQLiteDatabase writableDatabase = dataHelper.getWritableDatabase();
 
         /*File file = new File("/data/data/" + this.getPackageName()
                 + "/databases", DataInfo.DATABASE_NAME);
@@ -304,14 +309,12 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
 
                 int steps, calories;
                 float distance;
-                //The first type of data------------------------------------------------------------
+                //The first type of data  2.6.1 ------------------------------------------------------------
                 if (datas.get(0) == 0xAB && datas.get(4) == 0x51 && datas.get(5) == 0x08) {
                     Log.d(TAG,"steps calories and sleep data current");
-
                     steps = (datas.get(6) << 16) + (datas.get(7) << 8) + datas.get(8);
                     distance = (steps * 0.7f)/1000;//If the user does not tell you his stride, by default he walked 0.7m every step
                     calories =(datas.get(9) << 16) + (datas.get(10) << 8) + datas.get(11);
-
                     BigDecimal bd = new BigDecimal((double) distance);
                     BigDecimal bigDecimal = bd.setScale(2, RoundingMode.HALF_UP);
                     float distance2 = bigDecimal.floatValue();
@@ -319,18 +322,22 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
                     stepsTxt.setText("Steps -  "+String.valueOf(steps)+"stp");
                     distanceTxt.setText("Distance KM -  "+String.valueOf(distance2)+"km");
                     burntCalariesTxt.setText("Burnt calories -  "+String.valueOf(calories)+"kcal");
+                    dataHelper.insertCurrentData(String.valueOf(System.currentTimeMillis()),steps,calories,distance2,mDeviceAddress);
+                    ArrayList<CurrentData> list = dataHelper.getCurrentData();
+                    Log.i("zgy",list.toString());
                 }
-                //The second type of data-----------------------------------------------------------
+                //The second type of data  2.6.3 -----------------------------------------------------------
                 if (datas.get(0) == 0xAB && datas.get(4) == 0x51 && datas.get(5) == 0x20){//Hourly
                     Log.d(TAG,"the steps, calories, heart rate, blood oxygen,blood pressure data from hourly measure");
-
+                    int year = datas.get(6) + 2000;
+                    int month = datas.get(7);
+                    int day = datas.get(8);
+                    int hour = datas.get(9);
                 }
                 if (datas.get(0) == 0){
                     Log.d(TAG,"second packet data from hourly measure");
-
                 }
-
-                //The third type of data------------------------------------------------------------
+                //The third type of data 2.6.2 ------------------------------------------------------------
                 if ((datas.get(0) == 0xAB && datas.get(4) == 0x51)){
                     if (datas.get(5) == 0x11){
                         Log.d(TAG,"the Heart rate data from band measure");

@@ -3,6 +3,8 @@ package com.example.bandtest.utils;
 import android.content.Context;
 import android.location.LocationManager;
 
+import java.text.SimpleDateFormat;
+
 /**
  * Created by liuqiong on 2017/8/31.
  */
@@ -22,5 +24,11 @@ public class MyUtils {
             return true;
         }
         return false;
+    }
+
+    public static String formatTime(long time,String type){
+        SimpleDateFormat format=new SimpleDateFormat(type);
+        return format.format(time);
+
     }
 }

@@ -1,7 +1,7 @@
 package com.example.bandtest.db;
 
 /**
- * Created by liuqiong on 2017/9/5.
+ * Created by Harry on 2017/9/5.
  */
 
 public class DataInfo {
@@ -32,10 +32,26 @@ public class DataInfo {
     //create table
     public static final String CREATE_CURRENTDATA = "create table " +TABLE_CURRENT_DATA+
             "(" +
-            TIMEINMILLIS+" varchar,"+
-            STEPCOUNT+" int,"+
+            TIMEINMILLIS+" bigint,"+   //bigint-->long
+            STEPCOUNT+" int unique,"+  //unique
             CALORIES+" int,"+
             DISTANCE+" float,"+
             MACADDRESS+" varchar"+");";
 
+
+    public static final String CREATE_HOURLYDATA = "create table " +TABLE_HOURLY_DATA+
+            "(" +
+            TIMEINMILLIS+" bigint unique,"+
+            STEPCOUNT+" int,"+
+            CALORIES+" int,"+
+            DISTANCE+" float,"+
+            HEARTRATE+" int,"+
+            BLOODOXYGEN+" int,"+
+            BLOODPRESSUREHIGH+" int,"+
+            BLOODPRESSURELOW+" int,"+
+            SHALLOWSLEEPTIME+" int,"+
+            DEEPSLEEPTIME+" int,"+
+            SLEEPTIME+" int,"+
+            WAKEUPTIMES+" int,"+
+            MACADDRESS+" varchar"+");";
 }
