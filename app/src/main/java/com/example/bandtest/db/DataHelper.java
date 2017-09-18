@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.bandtest.bean.CurrentData;
+import com.example.bandtest.bean.HourlyData;
 
 import java.util.ArrayList;
 
@@ -64,7 +65,7 @@ public class DataHelper extends SQLiteOpenHelper {
      * @param distance
      * @param mac
      */
-    public void insertCurrentData(String time,int steps,int calories,float distance,String mac){
+    public void insertCurrentData(long time,int steps,int calories,float distance,String mac){
         db = getWritableDatabase();
         if (db.isOpen()){
             ContentValues contentValues = new ContentValues();
@@ -78,6 +79,10 @@ public class DataHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * get current data
+     * @return
+     */
     public ArrayList<CurrentData> getCurrentData(){
         ArrayList<CurrentData> lists = new ArrayList<>();
         db=getReadableDatabase();
@@ -95,4 +100,79 @@ public class DataHelper extends SQLiteOpenHelper {
         db.close();
         return lists;
     }
+
+    /**
+     * inset hourly data
+     * @param time
+     * @param steps
+     * @param calories
+     * @param distance
+     * @param hearRate
+     * @param bloodOxygen
+     * @param bloodPresurre_high
+     * @param bloodPresurre_low
+     * @param shallow
+     * @param deep
+     * @param sleep
+     * @param wakeupTimes
+     * @param mac
+     */
+    public void insertHourlyData(long time,int steps,int calories,float distance,int hearRate,
+                                 int bloodOxygen,int bloodPresurre_high,int bloodPresurre_low,long shallow,long deep,long sleep,int wakeupTimes, String mac){
+        db = getWritableDatabase();
+        if (db.isOpen()){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(DataInfo.TIMEINMILLIS,time);
+            contentValues.put(DataInfo.STEPCOUNT,steps);
+            contentValues.put(DataInfo.CALORIES,calories);
+            contentValues.put(DataInfo.DISTANCE,distance);
+            contentValues.put(DataInfo.HEARTRATE,hearRate);
+            contentValues.put(DataInfo.BLOODOXYGEN,bloodOxygen);
+            contentValues.put(DataInfo.BLOODPRESSUREHIGH,bloodPresurre_high);
+            contentValues.put(DataInfo.BLOODPRESSURELOW,bloodPresurre_low);
+            contentValues.put(DataInfo.SHALLOWSLEEPTIME,shallow);
+            contentValues.put(DataInfo.DEEPSLEEPTIME,deep);
+            contentValues.put(DataInfo.SLEEPTIME,sleep);
+            contentValues.put(DataInfo.WAKEUPTIMES,wakeupTimes);
+            contentValues.put(DataInfo.MACADDRESS,mac);
+            db.insert(DataInfo.TABLE_HOURLY_DATA,null,contentValues);
+            db.close();
+        }
+    }
+
+    /**
+     * get hourly data
+     * @return
+     */
+    public ArrayList<HourlyData> getHourlyData(){
+        ArrayList<HourlyData> lists = new ArrayList<>();
+        db=getReadableDatabase();
+        Cursor cursor = db.query(DataInfo.TABLE_HOURLY_DATA, null, null, null, null, null, null);
+        while (cursor.moveToNext()){
+            HourlyData hourlyData = new HourlyData();
+            hourlyData.setTimeInMillis(cursor.getLong(cursor.getColumnIndex(DataInfo.TIMEINMILLIS)));
+            hourlyData.setStepCount(cursor.getInt(cursor.getColumnIndex(DataInfo.STEPCOUNT)));
+            hourlyData.setCalories(cursor.getInt(cursor.getColumnIndex(DataInfo.CALORIES)));
+            hourlyData.setDistance(cursor.getFloat(cursor.getColumnIndex(DataInfo.DISTANCE)));
+            hourlyData.setHeartRate(cursor.getInt(cursor.getColumnIndex(DataInfo.HEARTRATE)));
+            hourlyData.setBloodOxygen(cursor.getInt(cursor.getColumnIndex(DataInfo.BLOODOXYGEN)));
+            hourlyData.setBloodPressureHigh(cursor.getInt(cursor.getColumnIndex(DataInfo.BLOODPRESSUREHIGH)));
+            hourlyData.setBloodPressureLow(cursor.getInt(cursor.getColumnIndex(DataInfo.BLOODPRESSURELOW)));
+            hourlyData.setShallowSleepTime(cursor.getLong(cursor.getColumnIndex(DataInfo.SHALLOWSLEEPTIME)));
+            hourlyData.setDeepSleepTime(cursor.getLong(cursor.getColumnIndex(DataInfo.DEEPSLEEPTIME)));
+            hourlyData.setSleepTime(cursor.getLong(cursor.getColumnIndex(DataInfo.SLEEPTIME)));
+            hourlyData.setWakeupTimes(cursor.getInt(cursor.getColumnIndex(DataInfo.WAKEUPTIMES)));
+            hourlyData.setMacAddress(cursor.getString(cursor.getColumnIndex(DataInfo.MACADDRESS)));
+            lists.add(hourlyData);
+        }
+        cursor.close();
+        db.close();
+        return lists;
+    }
+
+    private long shallowSleepTime;
+    private long deepSleepTime;
+    private long sleepTime;
+    private int wakeupTimes;
+    private String macAddress;
 }

@@ -4,9 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SPUtils {
-    public static final String DEVICE_NAME = "DEVICE_NAME";
+    public static final String DEVICE_NAME = "device_name";
     public static String PREFERENCE_NAME = "SmartBracelet";
-    public static String DEVICE_ADDRESS = "DEVICE_ADDRESS";
+    public static String DEVICE_ADDRESS = "device_address";
+    public static String HOURLY_MEASURETIME = "hourly_measuretime";
 
     private SPUtils() {
         throw new AssertionError();

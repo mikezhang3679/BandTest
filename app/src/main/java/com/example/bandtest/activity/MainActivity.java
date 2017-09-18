@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.example.bandtest.App;
 import com.example.bandtest.R;
 import com.example.bandtest.bean.CurrentData;
+import com.example.bandtest.bean.HourlyData;
 import com.example.bandtest.command.CommandManager;
 import com.example.bandtest.db.DataHelper;
 import com.example.bandtest.db.DataInfo;
@@ -37,7 +38,10 @@ import com.example.bandtest.utils.SPUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -50,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
     private List<String> list;
     private LocationManager locationManager;
     private Context mContext;
-    private Button changeDateBtn, setReminderBtn, findBand, refreshData;
+    private Button changeDateBtn, setReminderBtn, findBand, refreshData,getHourlyData;
     public BluetoothLeService mBluetoothLeService;
 
     // Code to manage Service lifecycle.
@@ -131,11 +135,13 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
 
         changeDateBtn = (Button) findViewById(R.id.changeDateBtn);
         setReminderBtn = (Button) findViewById(R.id.setReminderBtn);
+        getHourlyData = (Button) findViewById(R.id.getHourlyData);
         findBand = (Button) findViewById(R.id.findBand);
         refreshData = (Button) findViewById(R.id.refreshData);
 
         changeDateBtn.setOnClickListener(this);
         setReminderBtn.setOnClickListener(this);
+        getHourlyData.setOnClickListener(this);
         findBand.setOnClickListener(this);
         refreshData.setOnClickListener(this);
     }
@@ -230,6 +236,9 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
 
 
     private BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
+
+
+
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -249,72 +258,17 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
                 Log.i(TAG, "Received command" + DataHandlerUtils.bytesToHexStr(txValue));
                 List<Integer> datas = DataHandlerUtils.bytesToArrayList(txValue);
                 Log.i(TAG, datas.toString());
-                //RSSI
-               /* if (datas.get(4) == 0XB5) {// [171, 0, 4, 255, 181, 128, 72]
-                    Integer rssi = datas.get(6);
-                    Log.d(TAG, "RSSI" + rssi);
-                    test_result.setText("-" + rssi);
-                }
-                //按键测试
-                if (datas.get(4) == 0XB6) {//[171, 0, 4, 255, 182, 128, 0]
-                    Integer button = datas.get(6);
-                    if (button == 0) {
-                        test_result.setText(R.string.no_press);
-                    } else if (button == 1) {
-                        test_result.setText(R.string.press);
-                    }
-                }
-                //充电 、电量
-                if (datas.get(4) == 0X91) {//[171, 0, 5, 255, 145, 128, 0, 100]
-                    Integer integer = datas.get(6);//是否充电
-                    Integer integer1 = datas.get(7);//电量多少
-                    if (integer == 0) {
-                        test_result.setText(getString(R.string.no_charge) + getString(R.string.electricity) + integer1 + "%");
-                    } else if (integer == 1) {
-                        test_result.setText(getString(R.string.charging) + getString(R.string.electricity) + integer1 + "%");
-                    }
-                }
-                //三轴传感器
-                if (datas.get(4) == 0XB3) {//[171, 0, 5, 255, 179, 128, 1, 1]
-                    Integer integer1 = datas.get(6);//通信是否正常
-                    Integer integer2 = datas.get(7);//初始化是否成功
-                    if (integer1 == 0) {
-                        if (integer2 == 0) {
-                            test_result.setText(getString(R.string.abnormal_communication) + getString(R.string.Initialization_unsuccessful));
-                        } else if (integer2 == 1) {
-                            test_result.setText(getString(R.string.abnormal_communication) + getString(R.string.Initialize_successfully));
-                        }
-                    } else if (integer1 == 1) {
-                        if (integer2 == 0) {
-                            test_result.setText(getString(R.string.communication_normal) + getString(R.string.Initialization_unsuccessful));
-                        } else if (integer2 == 1) {
-                            test_result.setText(getString(R.string.communication_normal) + getString(R.string.Initialize_successfully));
-                        }
-                    }
-                }
-                //心率传感器
-                if (datas.get(4) == 0XB4) {//[171, 0, 4, 255, 180, 128, 1]
-                    Integer integer = datas.get(6);
-                    if (integer == 0) {
-                        test_result.setText(getString(R.string.abnormal_communication));
-                    } else if (integer == 1) {
-                        test_result.setText(getString(R.string.communication_normal));
-                    }
-                }
-                //测量心率
-                if (datas.get(4) == 0x31) {//[171, 0, 5, 255, 49, 10, 0, 190]   [171, 0, 5, 255, 49, 10, 84, 48]
-                    Integer integer = datas.get(6);
-                    test_result.setText(String.valueOf(integer));
-                }*/
 
-                int steps, calories;
-                float distance;
+//                int steps=0,calories=0,heartRate=0,bloodOxygen=0,bloodPressure_high=0,bloodPressure_low=0,wake_times=0;
+//                float distance,distance2=0;
+//                long shwllow_time,deep_time,total_time;
                 //The first type of data  2.6.1 ------------------------------------------------------------
                 if (datas.get(0) == 0xAB && datas.get(4) == 0x51 && datas.get(5) == 0x08) {
                     Log.d(TAG,"steps calories and sleep data current");
-                    steps = (datas.get(6) << 16) + (datas.get(7) << 8) + datas.get(8);
-                    distance = (steps * 0.7f)/1000;//If the user does not tell you his stride, by default he walked 0.7m every step
-                    calories =(datas.get(9) << 16) + (datas.get(10) << 8) + datas.get(11);
+
+                    int steps = (datas.get(6) << 16) + (datas.get(7) << 8) + datas.get(8);
+                    float distance = (steps * 0.7f)/1000;//If the user does not tell you his stride, by default he walked 0.7m every step
+                    int calories =(datas.get(9) << 16) + (datas.get(10) << 8) + datas.get(11);
                     BigDecimal bd = new BigDecimal((double) distance);
                     BigDecimal bigDecimal = bd.setScale(2, RoundingMode.HALF_UP);
                     float distance2 = bigDecimal.floatValue();
@@ -322,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
                     stepsTxt.setText("Steps -  "+String.valueOf(steps)+"stp");
                     distanceTxt.setText("Distance KM -  "+String.valueOf(distance2)+"km");
                     burntCalariesTxt.setText("Burnt calories -  "+String.valueOf(calories)+"kcal");
-                    dataHelper.insertCurrentData(String.valueOf(System.currentTimeMillis()),steps,calories,distance2,mDeviceAddress);
+                    dataHelper.insertCurrentData(System.currentTimeMillis(),steps,calories,distance2,mDeviceAddress);
                     ArrayList<CurrentData> list = dataHelper.getCurrentData();
                     Log.i("zgy",list.toString());
                 }
@@ -332,10 +286,46 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
                     int year = datas.get(6) + 2000;
                     int month = datas.get(7);
                     int day = datas.get(8);
-                    int hour = datas.get(9);
+                    int hour = datas.get(9)+1;
+                    String time= year+"-"+month+"-"+day+" "+hour;
+                    Log.i(TAG,"hourly_time  "+time);
+                    SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH");
+                    long timeInMillis=0;
+                    try {
+                        Date date = sdf.parse(time);
+                        timeInMillis=date.getTime();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    SPUtils.putLong(mContext, SPUtils.HOURLY_MEASURETIME, timeInMillis);
+
+                    int steps = (datas.get(10) << 16) + (datas.get(11) << 8) + datas.get(12);//步数
+                    int calories = (datas.get(13) << 16) + (datas.get(14) << 8) + datas.get(15);//卡路里
+                    float distance = (steps * 0.7f)/1000;//If the user does not tell you his stride, by default he walked 0.7m every step
+                    
+                    BigDecimal bd = new BigDecimal((double) distance);
+                    BigDecimal bigDecimal = bd.setScale(2, RoundingMode.HALF_UP);
+                    float distance2 = bigDecimal.floatValue();
+                    int heartRate = datas.get(16);
+                    int bloodOxygen = datas.get(17);
+                    int bloodPressure_high = datas.get(18);
+                    int bloodPressure_low = datas.get(19);
+                    dataHelper.insertHourlyData(timeInMillis,steps,calories,distance2, heartRate,
+                            bloodOxygen,bloodPressure_high,bloodPressure_low,0,0,0,0,mDeviceAddress);
                 }
                 if (datas.get(0) == 0){
                     Log.d(TAG,"second packet data from hourly measure");
+                    long timeInMillis=SPUtils.getLong(mContext,SPUtils.HOURLY_MEASURETIME,0);
+                    Log.i(TAG,"second packet---"+MyUtils.formatTime(timeInMillis,"yyyy-MM-dd HH:mm:ss"));
+                    long  shwllow_time = datas.get(1) * 60 * 60 * 1000L + datas.get(2) * 60 * 1000L;//浅度睡眠时间
+                    long deep_time = datas.get(3) * 60 * 60 * 1000L + datas.get(4) * 60 * 1000L;//深度睡眠时间
+                    long total_time = shwllow_time + deep_time;
+                    int wake_times = datas.get(5);//醒来次数
+                    //// TODO: 2017/9/19  update database 
+                    dataHelper.insertHourlyData(timeInMillis,0,0,0f, 0,
+                            0,0,0,shwllow_time,deep_time,total_time,wake_times,mDeviceAddress);
+
+
                 }
                 //The third type of data 2.6.2 ------------------------------------------------------------
                 if ((datas.get(0) == 0xAB && datas.get(4) == 0x51)){
@@ -380,11 +370,18 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
                 Intent intent = new Intent(mContext, ReminderActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.getHourlyData:
+
+                ArrayList<HourlyData> list = dataHelper.getHourlyData();
+                for (HourlyData hourlyData : list) {
+                    Log.i("hourly",hourlyData.toString());
+                }
+                break;
             case R.id.findBand:
                 manager.findBand();
                 break;
             case R.id.refreshData:
-                manager.syncData(System.currentTimeMillis());
+                manager.syncData(System.currentTimeMillis()-7*24*3600*1000);
                 break;
         }
     }
