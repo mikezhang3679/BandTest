@@ -89,7 +89,7 @@ public class DataHelper extends SQLiteOpenHelper {
     public ArrayList<CurrentData> getCurrentData(){
         ArrayList<CurrentData> lists = new ArrayList<>();
         db=getReadableDatabase();
-        Cursor cursor = db.query(DataInfo.TABLE_CURRENT_DATA, null, null, null, null, null, null);
+        Cursor cursor = db.query(DataInfo.TABLE_CURRENT_DATA, null, null, null, null, null, DataInfo.TIMEINMILLIS);
         while (cursor.moveToNext()){
             CurrentData currentData = new CurrentData();
             currentData.setTimeInMillis(cursor.getLong(cursor.getColumnIndex(DataInfo.TIMEINMILLIS)));
@@ -150,7 +150,7 @@ public class DataHelper extends SQLiteOpenHelper {
     public ArrayList<HourlyData> getHourlyData(){
         ArrayList<HourlyData> lists = new ArrayList<>();
         db=getReadableDatabase();
-        Cursor cursor = db.query(DataInfo.TABLE_HOURLY_DATA, null, null, null, null, null, null);
+        Cursor cursor = db.query(DataInfo.TABLE_HOURLY_DATA, null, null, null, null, null, DataInfo.TIMEINMILLIS);
         while (cursor.moveToNext()){
             HourlyData hourlyData = new HourlyData();
             hourlyData.setTimeInMillis(cursor.getLong(cursor.getColumnIndex(DataInfo.TIMEINMILLIS)));
@@ -223,7 +223,7 @@ public class DataHelper extends SQLiteOpenHelper {
     public ArrayList<BandTestData> getBandTestData(){
         ArrayList<BandTestData> lists = new ArrayList<>();
         db=getReadableDatabase();
-        Cursor cursor = db.query(DataInfo.TABLE_BAND_TEST_DATA, null, null, null, null, null, null);
+        Cursor cursor = db.query(DataInfo.TABLE_BAND_TEST_DATA, null, null, null, null, null, DataInfo.TIMEINMILLIS);
         while (cursor.moveToNext()){
             BandTestData bandTestData = new BandTestData();
             bandTestData.setTimeInMillis(cursor.getLong(cursor.getColumnIndex(DataInfo.TIMEINMILLIS)));

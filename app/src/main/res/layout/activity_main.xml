@@ -45,7 +45,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/test_result"
         android:text="@string/change_date"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp"
+        />
 
     <Button
         android:id="@+id/findBand"
@@ -123,21 +124,12 @@
         android:layout_marginLeft="20dp"
         android:text="Set Reminder "
         />
-    <Button
-        android:id="@+id/getHourlyData"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/setReminderBtn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
-        android:text="2.6.3 getHourlyData "
-        /> <Button
+
+        <Button
         android:id="@+id/getCurrentData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/getHourlyData"
+        android:layout_below="@+id/setReminderBtn"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
         android:layout_marginRight="20dp"
@@ -154,6 +146,18 @@
         android:layout_marginLeft="20dp"
         android:text="2.6.2 getBandTestData "
         />
+
+        <Button
+            android:id="@+id/getHourlyData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/getBandTestData"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="2.6.3 getHourlyData "
+            />
     </RelativeLayout>
     </ScrollView>
 

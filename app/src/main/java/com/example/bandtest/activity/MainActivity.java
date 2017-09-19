@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.database.sqlite.SQLiteConstraintException;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -217,11 +216,17 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
                         Intent intent = new Intent(MainActivity.this, DeviceScanActivity.class);
                         intent.putExtra("FROM_MAIN", 1);
                         startActivityForResult(intent, REQUEST_SEARCH);
+                        finish();
+
                     }
 
+                }else {
+                    Intent intent = new Intent(MainActivity.this, DeviceScanActivity.class);
+                    intent.putExtra("FROM_MAIN", 1);
+                    startActivityForResult(intent, REQUEST_SEARCH);
+                    finish();
                 }
 
-                finish();
                 break;
             case R.id.disconnect_ble:
                 mBluetoothLeService.disconnect();
@@ -312,13 +317,9 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
                     int bloodOxygen = datas.get(17);
                     int bloodPressure_high = datas.get(18);
                     int bloodPressure_low = datas.get(19);
-                    try {
-                        dataHelper.insertHourlyData(timeInMillis,steps,calories,distance2, heartRate,
+                    dataHelper.insertHourlyData(timeInMillis,steps,calories,distance2, heartRate,
                                 bloodOxygen,bloodPressure_high,bloodPressure_low,0,0,0,0,mDeviceAddress);
-                    } catch (SQLiteConstraintException e) {
-                        e.printStackTrace();
-                        Log.e(TAG,"This record has been inserted");
-                    }
+
                 }
                 if (datas.get(0) == 0){
                     Log.d(TAG,"second packet data from hourly measure");
@@ -425,7 +426,7 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
                 manager.findBand();
                 break;
             case R.id.refreshData:
-                manager.syncData(System.currentTimeMillis()-15*24*3600*1000);
+                manager.syncData(System.currentTimeMillis()-7*24*3600*1000);//2.6.4
                 break;
         }
     }
