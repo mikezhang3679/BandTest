@@ -2,6 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/device_name"
@@ -67,7 +74,9 @@
         android:layout_below="@+id/changeDateBtn"
         android:gravity="center"
         android:text=""
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        android:visibility="gone"
+        />
 
     <LinearLayout
         android:id="@+id/linear"
@@ -123,22 +132,29 @@
         android:layout_marginTop="5dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:text="getHourlyData "
-        />
-
-
-
-    <GridView
-        android:id="@+id/gridView"
+        android:text="2.6.3 getHourlyData "
+        /> <Button
+        android:id="@+id/getCurrentData"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_alignParentBottom="true"
-        android:layout_weight="1"
-        android:numColumns="3"
-        android:verticalSpacing="10dp"
-        android:visibility="gone">
-
-    </GridView>
-
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/getHourlyData"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="2.6.1 getCurrentData "
+        /> <Button
+        android:id="@+id/getBandTestData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/getCurrentData"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="2.6.2 getBandTestData "
+        />
+    </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.bandtest.bean.BandTestData;
 import com.example.bandtest.bean.CurrentData;
 import com.example.bandtest.bean.HourlyData;
 
@@ -38,6 +39,7 @@ public class DataHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DataInfo.CREATE_CURRENTDATA);
         db.execSQL(DataInfo.CREATE_HOURLYDATA);
+        db.execSQL(DataInfo.CREATE_BANDTESTDATA);
         Log.i("zgy","onCreate");
 
     }
@@ -47,6 +49,7 @@ public class DataHelper extends SQLiteOpenHelper {
         Log.i("zgy","onUpgrade");
         db.execSQL("DROP TABLE IF EXISTS "+DataInfo.TABLE_CURRENT_DATA);
         db.execSQL("DROP TABLE IF EXISTS "+DataInfo.TABLE_HOURLY_DATA);
+        db.execSQL("DROP TABLE IF EXISTS "+DataInfo.TABLE_BAND_TEST_DATA);
         onCreate(db);
 
 
@@ -170,9 +173,70 @@ public class DataHelper extends SQLiteOpenHelper {
         return lists;
     }
 
-    private long shallowSleepTime;
-    private long deepSleepTime;
-    private long sleepTime;
-    private int wakeupTimes;
-    private String macAddress;
+    /**
+     * update sleep data form hourly data
+     * @param shallow
+     * @param deep
+     * @param sleep
+     * @param wakeupTimes
+     * @param timeInMillis
+     * @return
+     */
+   public int updateHourlySleepData(long shallow,long deep,long sleep,int wakeupTimes,long timeInMillis){
+       db=getWritableDatabase();
+       ContentValues values=new ContentValues();
+       values.put(DataInfo.SHALLOWSLEEPTIME,shallow);
+       values.put(DataInfo.DEEPSLEEPTIME,deep);
+       values.put(DataInfo.SLEEPTIME,sleep);
+       values.put(DataInfo.WAKEUPTIMES,wakeupTimes);
+       return db.update(DataInfo.TABLE_HOURLY_DATA,values,DataInfo.TIMEINMILLIS+" = ?",new String[]{String.valueOf(timeInMillis)});
+   }
+
+    /**
+     * inset bandTest data
+     * @param timeInMillis
+     * @param heartRate
+     * @param bloodOxygen
+     * @param bloodPressureHigh
+     * @param bloodPressureLow
+     * @param mac
+     */
+    public void insertBandTestData(long timeInMillis,int heartRate,int bloodOxygen,int bloodPressureHigh,int bloodPressureLow,String mac){
+        db = getWritableDatabase();
+        if (db.isOpen()){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(DataInfo.TIMEINMILLIS,timeInMillis);
+            contentValues.put(DataInfo.HEARTRATE,heartRate);
+            contentValues.put(DataInfo.BLOODOXYGEN,bloodOxygen);
+            contentValues.put(DataInfo.BLOODPRESSUREHIGH,bloodPressureHigh);
+            contentValues.put(DataInfo.BLOODPRESSURELOW,bloodPressureLow);
+            contentValues.put(DataInfo.MACADDRESS,mac);
+            db.insert(DataInfo.TABLE_BAND_TEST_DATA,null,contentValues);
+            db.close();
+        }
+    }
+
+    /**
+     * get current data
+     * @return
+     */
+    public ArrayList<BandTestData> getBandTestData(){
+        ArrayList<BandTestData> lists = new ArrayList<>();
+        db=getReadableDatabase();
+        Cursor cursor = db.query(DataInfo.TABLE_BAND_TEST_DATA, null, null, null, null, null, null);
+        while (cursor.moveToNext()){
+            BandTestData bandTestData = new BandTestData();
+            bandTestData.setTimeInMillis(cursor.getLong(cursor.getColumnIndex(DataInfo.TIMEINMILLIS)));
+            bandTestData.setHeartRate(cursor.getInt(cursor.getColumnIndex(DataInfo.HEARTRATE)));
+            bandTestData.setBloodOxygen(cursor.getInt(cursor.getColumnIndex(DataInfo.BLOODOXYGEN)));
+            bandTestData.setBloodPressureHigh(cursor.getInt(cursor.getColumnIndex(DataInfo.BLOODPRESSUREHIGH)));
+            bandTestData.setBloodPressureLow(cursor.getInt(cursor.getColumnIndex(DataInfo.BLOODPRESSURELOW)));
+            bandTestData.setMacAddress(cursor.getString(cursor.getColumnIndex(DataInfo.MACADDRESS)));
+            lists.add(bandTestData);
+        }
+        cursor.close();
+        db.close();
+        return lists;
+    }
+
 }
