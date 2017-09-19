@@ -12,7 +12,6 @@ import com.example.bandtest.constans.Constans;
 import com.example.bandtest.utils.DataHandlerUtils;
 
 import java.util.Calendar;
-import java.util.List;
 
 
 public class CommandManager {
@@ -659,11 +658,11 @@ public class CommandManager {
     /**
      * remind
      */
-    public void setRemind(int id, int startH, int startM, int repeat, List<Integer> list) {
-        byte[] data = new byte[17];
+    public void setRemind(int id, int startH, int startM, int repeat, int integer) {
+        byte[] data = new byte[11];
         data[0] = (byte) 0xAB;
         data[1] = (byte) 0;
-        data[2] = (byte)14;
+        data[2] = (byte)8;
         data[3] = (byte) 0xff;
         data[4] = (byte) 0x96;
         data[5] = (byte)0x80;
@@ -672,15 +671,11 @@ public class CommandManager {
         data[8] = (byte) startM;
         data[9] = (byte) repeat;
 
-        data[10] = (byte) list.get(0).intValue();
-        data[11] = (byte) list.get(1).intValue();
-        data[12] = (byte) list.get(2).intValue();
-        data[13] = (byte) list.get(3).intValue();
-        data[14] = (byte) list.get(4).intValue();
-        data[15] = (byte) list.get(5).intValue();
-        data[16] = (byte) list.get(6).intValue();
+        data[10] = (byte) integer;
+
         broadcastData(data);
     }
+
 
 
     /**

@@ -17,6 +17,7 @@ import com.example.bandtest.R;
 import com.example.bandtest.command.CommandManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ReminderActivity extends AppCompatActivity implements View.OnClickListener {
@@ -36,6 +37,8 @@ public class ReminderActivity extends AppCompatActivity implements View.OnClickL
         mContext = ReminderActivity.this;
         manager = CommandManager.getInstance(this);
         initView();
+
+
     }
 
     public void initView() {
@@ -127,9 +130,26 @@ public class ReminderActivity extends AppCompatActivity implements View.OnClickL
                 list.add(friday? 1:0);
                 list.add(Saturday? 1:0);
 
+                Collections.reverse(list);
+                Integer remove = list.remove(list.size() - 1);
+                Log.i(TAG,"remove "+remove);
+                ArrayList<Integer> list1 = new ArrayList<>();
+                list1.add(remove);
+                list1.addAll(list);
+
+
+
+                StringBuffer sb=new StringBuffer();
+                for (Integer integer : list1) {
+                    sb.append(integer);
+                }
+
+
+                Integer integer = Integer.valueOf(sb.toString(), 2);
                 Log.i(TAG,"Sunday"+Sunday+"\nMonday"+Monday+"\nTuesday"+Tuesday+"\nWednesday"+Wednesday+"\nThursday"+Thursday+"\nfriday"+friday+"\nSaturday"+Saturday);
-                Log.i(TAG,list.toString());
-                manager.setRemind(id,startH,startM,time,list);
+                Log.i(TAG,sb.toString());
+                Log.i(TAG,"integer :"+integer);
+                manager.setRemind(id,startH,startM,time,integer);
 
 
                 break;
