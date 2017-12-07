@@ -286,6 +286,12 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
                     burntCalariesTxt.setText("Burnt calories -  "+String.valueOf(calories)+"kcal");
                     dataHelper.insertCurrentData(System.currentTimeMillis(),steps,calories,distance2,mDeviceAddress);
 
+                    //睡眠
+                    long shallowSleep = (datas.get(12) * 60 + datas.get(13)) * 60 * 1000L;
+                    long deepSleep = (datas.get(14) * 60 + datas.get(15)) * 60 * 1000L;
+                    long sleepTime = shallowSleep+deepSleep;
+                    int wake_times = datas.get(16);
+
                 }
                 //The second type of data  2.6.3 -----------------------------------------------------------
                 if (datas.get(0) == 0xAB && datas.get(4) == 0x51 && datas.get(5) == 0x20){//Hourly
