@@ -387,9 +387,9 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
         switch (v.getId()) {
             case R.id.changeDateBtn:
                 //Select date for getting Steps,Distance,Burnt Calaries from Band SDK
-                CustomDateDialogFragment f = new CustomDateDialogFragment();
-                f.setListener(MainActivity.this);
-                f.show(getSupportFragmentManager(), "dialog");
+//                CustomDateDialogFragment f = new CustomDateDialogFragment();
+//                f.setListener(MainActivity.this);
+//                f.show(getSupportFragmentManager(), "dialog");
                 break;
             case R.id.setReminderBtn:
                 //SetReminder Activity
