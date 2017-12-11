@@ -105,18 +105,7 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
 
         Log.i(TAG, DataInfo.CREATE_CURRENTDATA);
         dataHelper = DataHelper.getsInstance(this);
-//        SQLiteDatabase writableDatabase = dataHelper.getWritableDatabase();
 
-        /*File file = new File("/data/data/" + this.getPackageName()
-                + "/databases", DataInfo.DATABASE_NAME);
-        if (!file.exists()) {
-            //数据库不存在，初始化数据
-          Toast.makeText(this,"数据库不存在",Toast.LENGTH_SHORT).show();
-        } else {
-            //数据库存在，更新数据
-            Toast.makeText(this,"数据库存在",Toast.LENGTH_SHORT).show();
-
-        }*/
 
     }
 
