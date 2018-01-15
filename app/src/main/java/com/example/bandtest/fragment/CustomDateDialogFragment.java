@@ -8,15 +8,13 @@ import android.support.v4.app.DialogFragment;
 import android.view.Window;
 import android.widget.DatePicker;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 
 public class CustomDateDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener{
 
     public interface dateListener{
-        public void returnDate(String date);
+        void returnDate(int year, int month, int dayOfMonth);
     }
 
     dateListener listener;
@@ -40,13 +38,9 @@ public class CustomDateDialogFragment extends DialogFragment implements DatePick
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        Calendar c = Calendar.getInstance();
-        c.set(year, month, dayOfMonth);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        String formattedDate = sdf.format(c.getTime());
         if (listener != null)
         {
-            listener.returnDate(formattedDate);
+            listener.returnDate(year, month, dayOfMonth);
 
         }
 

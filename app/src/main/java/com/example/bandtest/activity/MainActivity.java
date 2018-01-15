@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
     private List<String> list;
     private LocationManager locationManager;
     private Context mContext;
-    private Button changeDateBtn, setReminderBtn, findBand, refreshData,getHourlyData,getCurrentData,getBandTestData;
+    private Button changeDateBtn, setReminderBtn,setReminderBtn2, findBand, refreshData,getHourlyData,getCurrentData,
+    getBandTestData;
     public BluetoothLeService mBluetoothLeService;
 
     // Code to manage Service lifecycle.
@@ -125,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
 
         changeDateBtn = (Button) findViewById(R.id.changeDateBtn);
         setReminderBtn = (Button) findViewById(R.id.setReminderBtn);
+        setReminderBtn2 = (Button) findViewById(R.id.setReminderBtn2);
         getHourlyData = (Button) findViewById(R.id.getHourlyData);
         getCurrentData = (Button) findViewById(R.id.getCurrentData);
         getBandTestData = (Button) findViewById(R.id.getBandTestData);
@@ -133,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
 
         changeDateBtn.setOnClickListener(this);
         setReminderBtn.setOnClickListener(this);
+        setReminderBtn2.setOnClickListener(this);
         getHourlyData.setOnClickListener(this);
         getCurrentData.setOnClickListener(this);
         getBandTestData.setOnClickListener(this);
@@ -371,14 +374,10 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
         }
     };
 
-    //Get Steps,Distance,Burnt Calaries from Band SDK of selected date
-    @Override
-    public void returnDate(String date) {
-        dateTxt.setText(date);//Selected Date
 
-        stepsTxt.setText("Steps -");//Get the steps from Band SDK
-        distanceTxt.setText("Distance KM -  ");//Get the Distance from Band SDK
-        burntCalariesTxt.setText("Burnt calaries - ");//Get the BurntCalaries from Band SDK
+
+    @Override
+    public void returnDate(int year, int month, int dayOfMonth) {
 
     }
 
@@ -387,9 +386,9 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
         switch (v.getId()) {
             case R.id.changeDateBtn:
                 //Select date for getting Steps,Distance,Burnt Calaries from Band SDK
-//                CustomDateDialogFragment f = new CustomDateDialogFragment();
-//                f.setListener(MainActivity.this);
-//                f.show(getSupportFragmentManager(), "dialog");
+                CustomDateDialogFragment f = new CustomDateDialogFragment();
+                f.setListener(MainActivity.this);
+                f.show(getSupportFragmentManager(), "dialog");
                 break;
             case R.id.setReminderBtn:
                 //SetReminder Activity
@@ -422,6 +421,15 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
                 break;
             case R.id.refreshData:
                 manager.syncData(System.currentTimeMillis()-7*24*3600*1000);//2.6.4
+                break;
+            case R.id.setReminderBtn2:
+
+                Intent intent2 = new Intent(mContext, ReminderActivity2.class);
+                startActivity(intent2);
+
+                break;
+            default:
+
                 break;
         }
     }
@@ -461,4 +469,6 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
                     .show();
         }
     }
+
+
 }

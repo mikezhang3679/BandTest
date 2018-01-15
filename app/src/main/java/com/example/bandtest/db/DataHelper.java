@@ -10,6 +10,7 @@ import android.util.Log;
 import com.example.bandtest.bean.BandTestData;
 import com.example.bandtest.bean.CurrentData;
 import com.example.bandtest.bean.HourlyData;
+import com.example.bandtest.bean.RemindData;
 
 import java.util.ArrayList;
 
@@ -40,6 +41,7 @@ public class DataHelper extends SQLiteOpenHelper {
         db.execSQL(DataInfo.CREATE_CURRENTDATA);
         db.execSQL(DataInfo.CREATE_HOURLYDATA);
         db.execSQL(DataInfo.CREATE_BANDTESTDATA);
+        db.execSQL(DataInfo.CREATE_REMINDDATA);
         Log.i("zgy","onCreate");
 
     }
@@ -50,6 +52,7 @@ public class DataHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+DataInfo.TABLE_CURRENT_DATA);
         db.execSQL("DROP TABLE IF EXISTS "+DataInfo.TABLE_HOURLY_DATA);
         db.execSQL("DROP TABLE IF EXISTS "+DataInfo.TABLE_BAND_TEST_DATA);
+        db.execSQL("DROP TABLE IF EXISTS "+DataInfo.TABLE_REMIND_DATA );
         onCreate(db);
 
 
@@ -239,4 +242,32 @@ public class DataHelper extends SQLiteOpenHelper {
         return lists;
     }
 
+    public void inserRemindData(String time,String remindId,String switch1){
+        db = getWritableDatabase();
+        if (db.isOpen()){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(DataInfo.TIME,time);
+            contentValues.put(DataInfo.REMIND_ID,remindId);
+            contentValues.put(DataInfo.SWITCH,switch1);
+            db.insert(DataInfo.TABLE_REMIND_DATA,null,contentValues);
+            db.close();
+        }
+    }
+
+    public ArrayList<RemindData> getRemindData() {
+        ArrayList<RemindData> list = new ArrayList<>();
+        db = getReadableDatabase();
+        Cursor cursor = db.query(DataInfo.TABLE_REMIND_DATA, null, null, null, null, null, null);
+        while(cursor.moveToNext()){
+            RemindData remindData = new RemindData();
+            remindData.setNumber(cursor.getInt(cursor.getColumnIndex(DataInfo.NUMBER)));
+            remindData.setTime(cursor.getString(cursor.getColumnIndex(DataInfo.TIME)));
+            remindData.setRemindId(cursor.getString(cursor.getColumnIndex(DataInfo.REMIND_ID)));
+            remindData.setSwitch1(cursor.getString(cursor.getColumnIndex(DataInfo.SWITCH)));
+            list.add(remindData);
+        }
+        cursor.close();
+        db.close();
+        return list;
+    }
 }

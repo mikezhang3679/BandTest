@@ -46,7 +46,6 @@
         android:layout_below="@+id/test_result"
         android:text="@string/change_date"
         android:layout_margin="10dp"
-        android:visibility="gone"
         />
 
     <Button
@@ -77,7 +76,6 @@
         android:gravity="center"
         android:text=""
         android:textColor="@android:color/black"
-        android:visibility="gone"
         />
 
     <LinearLayout
@@ -127,16 +125,29 @@
         />
 
         <Button
+            android:id="@+id/setReminderBtn2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/setReminderBtn"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="Set Reminder2 "
+            />
+
+        <Button
         android:id="@+id/getCurrentData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/setReminderBtn"
+        android:layout_below="@+id/setReminderBtn2"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:text="2.6.1 getCurrentData "
-        /> <Button
+        />
+        <Button
         android:id="@+id/getBandTestData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

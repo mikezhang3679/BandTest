@@ -13,6 +13,7 @@ public class DataInfo {
     public static String TABLE_CURRENT_DATA="currentData";//实时数据(计步、卡路里、睡眠值)
     public static String TABLE_HOURLY_DATA="hourlyData";//整点数据(计步、卡路里、心率、血氧、血压、睡眠时间)
     public static String TABLE_BAND_TEST_DATA="bandTestData";//手环单机测量的数据(心率、血氧、血压)
+    public static String TABLE_REMIND_DATA="remindData";//祈祷数据
 
     //Table Colums
     public static String TIMEINMILLIS = "timeInMillis";
@@ -28,6 +29,15 @@ public class DataInfo {
     public static String SLEEPTIME = "sleepTime";
     public static String WAKEUPTIMES = "wakeupTimes";
     public static String MACADDRESS = "macAddress";
+
+    //祈祷表
+    public static String NUMBER = "number";
+    public static String TIME = "time";
+    public static String REMIND_ID = "remindId";
+    public static String SWITCH = "switch";
+
+
+
 
     //create table
     public static final String CREATE_CURRENTDATA = "create table " +TABLE_CURRENT_DATA+
@@ -63,4 +73,14 @@ public class DataInfo {
             BLOODPRESSUREHIGH+" int,"+
             BLOODPRESSURELOW+" int,"+
             MACADDRESS+" varchar"+");";
+
+
+
+    public static final String CREATE_REMINDDATA = "create table "+TABLE_REMIND_DATA+
+            "("+
+            NUMBER+" integer primary key autoincrement,"+
+            TIME+" varchar,"+
+            REMIND_ID+" varchar,"+
+            SWITCH+" varchar"+");"
+            ;
 }
