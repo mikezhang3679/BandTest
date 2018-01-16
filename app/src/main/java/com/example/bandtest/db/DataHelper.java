@@ -242,11 +242,13 @@ public class DataHelper extends SQLiteOpenHelper {
         return lists;
     }
 
-    public void inserRemindData(String time,String remindId,String switch1){
+    public void inserRemindData(String number,String time,String repeat,String remindId,String switch1){
         db = getWritableDatabase();
         if (db.isOpen()){
             ContentValues contentValues = new ContentValues();
+            contentValues.put(DataInfo.NUMBER,number);
             contentValues.put(DataInfo.TIME,time);
+            contentValues.put(DataInfo.REPEAT,repeat);
             contentValues.put(DataInfo.REMIND_ID,remindId);
             contentValues.put(DataInfo.SWITCH,switch1);
             db.insert(DataInfo.TABLE_REMIND_DATA,null,contentValues);
@@ -262,6 +264,7 @@ public class DataHelper extends SQLiteOpenHelper {
             RemindData remindData = new RemindData();
             remindData.setNumber(cursor.getInt(cursor.getColumnIndex(DataInfo.NUMBER)));
             remindData.setTime(cursor.getString(cursor.getColumnIndex(DataInfo.TIME)));
+            remindData.setRepeat(cursor.getString(cursor.getColumnIndex(DataInfo.REPEAT)));
             remindData.setRemindId(cursor.getString(cursor.getColumnIndex(DataInfo.REMIND_ID)));
             remindData.setSwitch1(cursor.getString(cursor.getColumnIndex(DataInfo.SWITCH)));
             list.add(remindData);
@@ -269,5 +272,20 @@ public class DataHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return list;
+    }
+
+    public void deleteAll(){
+        db = getWritableDatabase();
+        int delete = db.delete(DataInfo.TABLE_REMIND_DATA, null, null);
+        Log.i("zgy","delete: "+delete);
+        db.close();
+    }
+
+    public void deleteDataBase ()  {
+        db = getWritableDatabase ();
+        db.execSQL("DROP TABLE IF EXISTS "+DataInfo.TABLE_REMIND_DATA );
+        db.execSQL(DataInfo.CREATE_REMINDDATA);
+        db.close();
+
     }
 }

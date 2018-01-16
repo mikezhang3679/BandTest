@@ -676,6 +676,25 @@ public class CommandManager {
         broadcastData(data);
     }
 
+    public void setPray(int month, int dayOfMonth, int hour, int minute, int repeat, int id, int sw, int number) {
+        byte[] data = new byte[14];
+        data[0] = (byte) 0xAB;
+        data[1] = (byte) 0;
+        data[2] = (byte)11;
+        data[3] = (byte) 0xff;
+        data[4] = (byte) 0x96;
+        data[5] = (byte)0x80;
+        data[6] = (byte) month;
+        data[7] = (byte) dayOfMonth;
+        data[8] = (byte) hour;
+        data[9] = (byte) minute;
+        data[10] = (byte) repeat;
+        data[11] = (byte) id;
+        data[12] = (byte) sw;
+        data[13] = (byte) number;
+        broadcastData(data);
+    }
+
 
 
     /**
@@ -714,5 +733,6 @@ public class CommandManager {
             Log.e(TAG, e.toString());
         }
     }
+
 
 }

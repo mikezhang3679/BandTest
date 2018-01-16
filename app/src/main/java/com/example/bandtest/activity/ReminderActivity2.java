@@ -4,12 +4,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bandtest.R;
 import com.example.bandtest.bean.RemindData;
@@ -25,23 +28,30 @@ public class ReminderActivity2 extends AppCompatActivity implements View.OnClick
     private Context mContext;
     private CommandManager manager;
     private Button selectTime,send;
-    private EditText remindId;
+    private EditText remindId,repeatCount;
     private Switch switch1;
     private TextView remind_data;
+    private DataHelper dataHelper;
 
     private int month;
     private int dayOfMonth;
     private int hour;
     private int minute;
     private int id;
+    private int repeat;
     private int sw;
+    private int number ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder2);
         mContext = ReminderActivity2.this;
         manager = CommandManager.getInstance(this);
+        dataHelper = DataHelper.getsInstance(ReminderActivity2.this);
+
         initView();
+        showRemind();
 
 
     }
@@ -50,6 +60,7 @@ public class ReminderActivity2 extends AppCompatActivity implements View.OnClick
         selectTime = (Button) findViewById(R.id.selectTime);
         send = (Button) findViewById(R.id.send);
         remindId = (EditText) findViewById(R.id.remindId);
+        repeatCount = (EditText) findViewById(R.id.repeatCount);
         remind_data = (TextView) findViewById(R.id.remind_data);
         switch1 = (Switch) findViewById(R.id.switch1);
         selectTime.setOnClickListener(this);
@@ -71,29 +82,41 @@ public class ReminderActivity2 extends AppCompatActivity implements View.OnClick
                 break;
 
             case R.id.send:
-                this.id = Integer.parseInt(remindId.getText().toString().trim());
+
+                String str = remindId.getText().toString().trim();
+                String str2 = repeatCount.getText().toString().trim();
+
+                if ("".equals(str)||"".equals(str2)){
+                    return;
+                }
+                this.id = Integer.parseInt(str);
+                this.repeat = Integer.parseInt(str2);
 
 
                 Log.i(TAG,"month"+month+"\n"
-                +"dayOfMonth"+dayOfMonth+"\n"
+                        +"dayOfMonth"+dayOfMonth+"\n"
                         +"hour"+hour+"\n"
                         +"minute"+minute+"\n"
+                        +"repeat"+repeat+"\n"
                         +"id"+id+"\n"
                         +"switch"+sw
 
-);
+                );
+                if (number<35){
+                    number++;
+                    dataHelper.inserRemindData(String.valueOf(number),month+"-"+dayOfMonth+" "+hour+":"+minute,String
+                                    .valueOf
+                                    (repeat),
+                            String
+                            .valueOf
+                            (id),String.valueOf(sw));
+                    showRemind();
 
-
-                DataHelper dataHelper = DataHelper.getsInstance(ReminderActivity2.this);
-
-
-                dataHelper.inserRemindData(month+"-"+dayOfMonth+" "+hour+":"+minute,String.valueOf(id),String.valueOf(sw));
-                ArrayList<RemindData> remindData = dataHelper.getRemindData();
-                for (RemindData remindDatum : remindData) {
-                    Log.i(TAG,remindDatum.toString());
-
+                    manager.setPray(month,dayOfMonth,hour,minute,repeat,id,sw,number);
+                }else {
+                    Toast.makeText(ReminderActivity2.this,"max 35",Toast.LENGTH_SHORT).show();
                 }
-                remind_data.setText(remindData.toString());
+
 
                 break;
 
@@ -125,5 +148,39 @@ public class ReminderActivity2 extends AppCompatActivity implements View.OnClick
     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
         Log.i(TAG,"Switch State=" +isChecked);
         sw = isChecked? 1:0;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.remind,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_sync_time:
+                manager.setTimeSync();
+                break;
+            case R.id.clear_data:
+                dataHelper.deleteAll();
+                showRemind();
+                number = 0;
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showRemind() {
+        ArrayList<RemindData> remindData = dataHelper.getRemindData();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (RemindData remindDatum : remindData) {
+            stringBuilder.append(remindDatum.toString()+"\n");
+//            Log.i(TAG,remindDatum.toString());
+
+        }
+        remind_data.setText(stringBuilder.toString());
     }
 }

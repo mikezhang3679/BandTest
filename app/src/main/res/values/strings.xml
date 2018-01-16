@@ -58,7 +58,7 @@
     <string name="shake_to_photo">Shake to take a picture</string>
     <string name="anti_lost">Anti lost</string>
     <string name="version_code">Version code</string>
-    <string name="sync_time">Synchronization time</string>
+    <string name="sync_time">syncTime</string>
     <string name="fall">Fall</string>
     <string name="hr_one">Single heart rate measurement</string>
     <string name="real_time">Real-time heart rate measurement</string>

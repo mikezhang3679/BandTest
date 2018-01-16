@@ -33,6 +33,7 @@ public class DataInfo {
     //祈祷表
     public static String NUMBER = "number";
     public static String TIME = "time";
+    public static String REPEAT = "REPEAT";
     public static String REMIND_ID = "remindId";
     public static String SWITCH = "switch";
 
@@ -78,8 +79,9 @@ public class DataInfo {
 
     public static final String CREATE_REMINDDATA = "create table "+TABLE_REMIND_DATA+
             "("+
-            NUMBER+" integer primary key autoincrement,"+
+            NUMBER+" varchar,"+
             TIME+" varchar,"+
+            REPEAT+" varchar,"+
             REMIND_ID+" varchar,"+
             SWITCH+" varchar"+");"
             ;

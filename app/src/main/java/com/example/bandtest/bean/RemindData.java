@@ -5,18 +5,12 @@ package com.example.bandtest.bean;
  */
 
 public class RemindData {
-    private int number;
+
     private String time;
+    private String repeat;
     private String remindId;
     private String switch1;
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
+    private int number;
 
     public String getTime() {
         return time;
@@ -24,6 +18,14 @@ public class RemindData {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getRepeat() {
+        return repeat;
+    }
+
+    public void setRepeat(String repeat) {
+        this.repeat = repeat;
     }
 
     public String getRemindId() {
@@ -42,14 +44,21 @@ public class RemindData {
         this.switch1 = switch1;
     }
 
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
     @Override
-    public String
-    toString() {
-        return "RemindData{" +
-                "number=" + number +
-                ", time='" + time + '\'' +
+    public String toString() {
+        return "time='" + time + '\'' +
+                ", repeat='" + repeat + '\'' +
                 ", remindId='" + remindId + '\'' +
                 ", switch1='" + switch1 + '\'' +
-                '}';
+                ", number=" + number
+                ;
     }
 }
