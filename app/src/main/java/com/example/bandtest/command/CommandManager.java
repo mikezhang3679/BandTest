@@ -676,7 +676,7 @@ public class CommandManager {
         broadcastData(data);
     }
 
-    public void setPray(int month, int dayOfMonth, int hour, int minute, int repeat, int id, int sw, int number) {
+    public void addPray(int month, int dayOfMonth, int hour, int minute, int repeat, int id, int sw, int number) {
         byte[] data = new byte[14];
         data[0] = (byte) 0xAB;
         data[1] = (byte) 0;
@@ -695,7 +695,7 @@ public class CommandManager {
         broadcastData(data);
     }
 
-    public void deletePray(int month, int dayOfMonth, int id, int sw) {
+    public void setPray(int month, int dayOfMonth, int id, int sw) {
         byte[] data = new byte[10];
         data[0] = (byte) 0xAB;
         data[1] = (byte) 0;

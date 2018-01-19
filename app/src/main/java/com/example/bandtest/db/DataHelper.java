@@ -296,5 +296,17 @@ public class DataHelper extends SQLiteOpenHelper {
         String whereClause = "day=? and remindId=?";
         String[] whereArgs = new String[]{dayofMonth,id};
         db.delete(DataInfo.TABLE_REMIND_DATA,whereClause,whereArgs);
+        db.close();
+    }
+
+    public void updatePray(String dayofMonth, String id,int sw){
+        db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DataInfo.SWITCH,sw);
+        String whereClause = "day=? and remindId=?";
+        String[] whereArgs = new String[]{dayofMonth,id};
+        db.update(DataInfo.TABLE_REMIND_DATA,contentValues,whereClause,whereArgs);
+        db.close();
+
     }
 }

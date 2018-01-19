@@ -29,11 +29,11 @@ public class ReminderActivity2 extends AppCompatActivity implements View.OnClick
     private CommandManager manager;
     private Button selectTime, add,selectTime2,delete;
     private EditText remindId,repeatCount,remindId2;
-    private Switch switch1;
+    private Switch switch1,switch2;
     private TextView remind_data;
     private DataHelper dataHelper;
 
-    private int id,sw,repeat,number,month,dayOfMonth,hour,minute;
+    private int id,sw,sw2,repeat,number,month,dayOfMonth,hour,minute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,18 +53,20 @@ public class ReminderActivity2 extends AppCompatActivity implements View.OnClick
         selectTime = (Button) findViewById(R.id.selectTime);
         selectTime2 = (Button) findViewById(R.id.selectTime2);
         add = (Button) findViewById(R.id.add);
-        delete = (Button) findViewById(R.id.delete);
+        delete = (Button) findViewById(R.id.send);
         remindId = (EditText) findViewById(R.id.remindId);
         remindId2 = (EditText) findViewById(R.id.remindId2);
         repeatCount = (EditText) findViewById(R.id.repeatCount);
         remind_data = (TextView) findViewById(R.id.remind_data);
         switch1 = (Switch) findViewById(R.id.switch1);
+        switch2 = (Switch) findViewById(R.id.switch2);
 
         selectTime.setOnClickListener(this);
         selectTime2.setOnClickListener(this);
         add.setOnClickListener(this);
         delete.setOnClickListener(this);
         switch1.setOnCheckedChangeListener(this);
+        switch2.setOnCheckedChangeListener(this);
 
 
 
@@ -120,7 +122,7 @@ public class ReminderActivity2 extends AppCompatActivity implements View.OnClick
                             (id),String.valueOf(sw),String.valueOf(number));
                     showRemind();
 
-                    manager.setPray(month,dayOfMonth,hour,minute,repeat,id,sw,number);
+                    manager.addPray(month,dayOfMonth,hour,minute,repeat,id,sw,number);
                 }else {
                     Toast.makeText(ReminderActivity2.this,"max 35",Toast.LENGTH_SHORT).show();
                 }
@@ -128,7 +130,7 @@ public class ReminderActivity2 extends AppCompatActivity implements View.OnClick
 
                 break;
 
-           case R.id.delete:
+           case R.id.send:
 
                 String str3= remindId2.getText().toString().trim();
 
@@ -144,26 +146,9 @@ public class ReminderActivity2 extends AppCompatActivity implements View.OnClick
 
                 );
 
-                manager.deletePray(month,dayOfMonth,id,0);
-                dataHelper.deleteByDayAndId(String.valueOf(month+"-"+dayOfMonth),String.valueOf(id));
+                manager.setPray(month,dayOfMonth,id,sw2);
+                dataHelper.updatePray(String.valueOf(month+"-"+dayOfMonth),String.valueOf(id),sw2);
                 showRemind();
-//                if (number<35){
-//                    number++;
-//                    dataHelper.inserRemindData(String.valueOf(number),month+"-"+dayOfMonth+" "+hour+":"+minute,String
-//                                    .valueOf
-//                                    (repeat),
-//                            String
-//                            .valueOf
-//                            (id),String.valueOf(sw));
-//                    showRemind();
-//
-//                    manager.setPray(month,dayOfMonth,hour,minute,repeat,id,sw,number);
-//                }else {
-//                    Toast.makeText(ReminderActivity2.this,"max 35",Toast.LENGTH_SHORT).show();
-//                }
-
-
-
 
                 break;
 
@@ -204,7 +189,19 @@ public class ReminderActivity2 extends AppCompatActivity implements View.OnClick
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
         Log.i(TAG,"Switch State=  " +isChecked);
-        sw = isChecked? 1:0;
+        switch (compoundButton.getId()){
+            case R.id.switch1:
+                sw = isChecked? 1:0;
+                break;
+            case R.id.switch2:
+                sw2 = isChecked? 1:0;
+                break;
+            default:
+                break;
+        }
+
+
+
 
 
     }
