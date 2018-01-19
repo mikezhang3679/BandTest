@@ -27,20 +27,13 @@ public class ReminderActivity2 extends AppCompatActivity implements View.OnClick
     private final static String TAG=ReminderActivity2.class.getSimpleName();
     private Context mContext;
     private CommandManager manager;
-    private Button selectTime,send;
-    private EditText remindId,repeatCount;
+    private Button selectTime, add,selectTime2,delete;
+    private EditText remindId,repeatCount,remindId2;
     private Switch switch1;
     private TextView remind_data;
     private DataHelper dataHelper;
 
-    private int month;
-    private int dayOfMonth;
-    private int hour;
-    private int minute;
-    private int id;
-    private int repeat;
-    private int sw;
-    private int number ;
+    private int id,sw,repeat,number,month,dayOfMonth,hour,minute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +51,24 @@ public class ReminderActivity2 extends AppCompatActivity implements View.OnClick
 
     public void initView() {
         selectTime = (Button) findViewById(R.id.selectTime);
-        send = (Button) findViewById(R.id.send);
+        selectTime2 = (Button) findViewById(R.id.selectTime2);
+        add = (Button) findViewById(R.id.add);
+        delete = (Button) findViewById(R.id.delete);
         remindId = (EditText) findViewById(R.id.remindId);
+        remindId2 = (EditText) findViewById(R.id.remindId2);
         repeatCount = (EditText) findViewById(R.id.repeatCount);
         remind_data = (TextView) findViewById(R.id.remind_data);
         switch1 = (Switch) findViewById(R.id.switch1);
+
         selectTime.setOnClickListener(this);
-        send.setOnClickListener(this);
+        selectTime2.setOnClickListener(this);
+        add.setOnClickListener(this);
+        delete.setOnClickListener(this);
         switch1.setOnCheckedChangeListener(this);
+
+
+
+
 
     }
 
@@ -74,14 +77,19 @@ public class ReminderActivity2 extends AppCompatActivity implements View.OnClick
         switch (v.getId()) {
             case R.id.selectTime:
                 CustomDateDialogFragment customDateDialogFragment = new CustomDateDialogFragment();
-                customDateDialogFragment.setListener(ReminderActivity2.this);
+                customDateDialogFragment.setListener(ReminderActivity2.this,true);
                 customDateDialogFragment.show(getSupportFragmentManager(),"datePicker");
-
-
 
                 break;
 
-            case R.id.send:
+            case R.id.selectTime2:
+                CustomDateDialogFragment customDateDialogFragment2 = new CustomDateDialogFragment();
+                customDateDialogFragment2.setListener(ReminderActivity2.this,false);
+                customDateDialogFragment2.show(getSupportFragmentManager(),"datePicker");
+
+                break;
+
+            case R.id.add:
 
                 String str = remindId.getText().toString().trim();
                 String str2 = repeatCount.getText().toString().trim();
@@ -104,12 +112,12 @@ public class ReminderActivity2 extends AppCompatActivity implements View.OnClick
                 );
                 if (number<35){
                     number++;
-                    dataHelper.inserRemindData(String.valueOf(number),month+"-"+dayOfMonth+" "+hour+":"+minute,String
+                    dataHelper.inserRemindData(month+"-"+dayOfMonth,hour+":"+minute,String
                                     .valueOf
                                     (repeat),
                             String
                             .valueOf
-                            (id),String.valueOf(sw));
+                            (id),String.valueOf(sw),String.valueOf(number));
                     showRemind();
 
                     manager.setPray(month,dayOfMonth,hour,minute,repeat,id,sw,number);
@@ -119,6 +127,46 @@ public class ReminderActivity2 extends AppCompatActivity implements View.OnClick
 
 
                 break;
+
+           case R.id.delete:
+
+                String str3= remindId2.getText().toString().trim();
+
+                if ("".equals(str3)){
+                    return;
+                }
+                this.id = Integer.parseInt(str3);
+
+
+                Log.i(TAG,"month: "+month+"\n"
+                        +"dayOfMonth: "+dayOfMonth+"\n"
+                        +"id: "+id
+
+                );
+
+                manager.deletePray(month,dayOfMonth,id,0);
+                dataHelper.deleteByDayAndId(String.valueOf(month+"-"+dayOfMonth),String.valueOf(id));
+                showRemind();
+//                if (number<35){
+//                    number++;
+//                    dataHelper.inserRemindData(String.valueOf(number),month+"-"+dayOfMonth+" "+hour+":"+minute,String
+//                                    .valueOf
+//                                    (repeat),
+//                            String
+//                            .valueOf
+//                            (id),String.valueOf(sw));
+//                    showRemind();
+//
+//                    manager.setPray(month,dayOfMonth,hour,minute,repeat,id,sw,number);
+//                }else {
+//                    Toast.makeText(ReminderActivity2.this,"max 35",Toast.LENGTH_SHORT).show();
+//                }
+
+
+
+
+                break;
+
 
 
             default:
@@ -131,23 +179,34 @@ public class ReminderActivity2 extends AppCompatActivity implements View.OnClick
         Log.i(TAG,"hour: "+hour +"  minute: "+minute);
         this.hour = hour;
         this.minute = minute;
+
+        selectTime.setText(month+"-"+dayOfMonth +" "+this.hour+":"+this.minute);
     }
 
     @Override
-    public void returnDate(int year, int month, int dayOfMonth) {
+    public void returnDate(int year, int month, int dayOfMonth,boolean showTime) {
         Log.i(TAG,"year: "+year +"  month: "+month+"  dayOfMonth: "+dayOfMonth);
         this.month = month+1;
         this.dayOfMonth = dayOfMonth;
+        selectTime2.setText(this.month+"-"+this.dayOfMonth);
 
-        TimePickerFragment newFragment = new TimePickerFragment();
-        newFragment.setTimeLisenter(ReminderActivity2.this);
-        newFragment.show(getSupportFragmentManager(),"timePicker");
+        if (showTime){
+            TimePickerFragment newFragment = new TimePickerFragment();
+            newFragment.setTimeLisenter(ReminderActivity2.this);
+            newFragment.show(getSupportFragmentManager(),"timePicker");
+        }
+
+
     }
+
+
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-        Log.i(TAG,"Switch State=" +isChecked);
+        Log.i(TAG,"Switch State=  " +isChecked);
         sw = isChecked? 1:0;
+
+
     }
 
     @Override

@@ -6,11 +6,20 @@ package com.example.bandtest.bean;
 
 public class RemindData {
 
+    private String day;
     private String time;
     private String repeat;
     private String remindId;
     private String switch1;
     private int number;
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
 
     public String getTime() {
         return time;
@@ -47,18 +56,18 @@ public class RemindData {
     public int getNumber() {
         return number;
     }
-
+;
     public void setNumber(int number) {
         this.number = number;
     }
 
     @Override
     public String toString() {
-        return "time='" + time + '\'' +
+        return "day='" + day + '\'' +
+                ", time='" + time + '\'' +
                 ", repeat='" + repeat + '\'' +
-                ", remindId='" + remindId + '\'' +
+                ", ID='" + remindId + '\'' +
                 ", switch1='" + switch1 + '\'' +
-                ", number=" + number
-                ;
+                ", number=" + number;
     }
 }

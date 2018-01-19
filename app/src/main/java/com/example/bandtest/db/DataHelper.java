@@ -242,15 +242,16 @@ public class DataHelper extends SQLiteOpenHelper {
         return lists;
     }
 
-    public void inserRemindData(String number,String time,String repeat,String remindId,String switch1){
+    public void inserRemindData(String day,String time,String repeat,String remindId,String switch1,String number){
         db = getWritableDatabase();
         if (db.isOpen()){
             ContentValues contentValues = new ContentValues();
-            contentValues.put(DataInfo.NUMBER,number);
+            contentValues.put(DataInfo.DAY,day);
             contentValues.put(DataInfo.TIME,time);
             contentValues.put(DataInfo.REPEAT,repeat);
             contentValues.put(DataInfo.REMIND_ID,remindId);
             contentValues.put(DataInfo.SWITCH,switch1);
+            contentValues.put(DataInfo.NUMBER,number);
             db.insert(DataInfo.TABLE_REMIND_DATA,null,contentValues);
             db.close();
         }
@@ -262,11 +263,12 @@ public class DataHelper extends SQLiteOpenHelper {
         Cursor cursor = db.query(DataInfo.TABLE_REMIND_DATA, null, null, null, null, null, null);
         while(cursor.moveToNext()){
             RemindData remindData = new RemindData();
-            remindData.setNumber(cursor.getInt(cursor.getColumnIndex(DataInfo.NUMBER)));
+            remindData.setDay(cursor.getString(cursor.getColumnIndex(DataInfo.DAY)));
             remindData.setTime(cursor.getString(cursor.getColumnIndex(DataInfo.TIME)));
             remindData.setRepeat(cursor.getString(cursor.getColumnIndex(DataInfo.REPEAT)));
             remindData.setRemindId(cursor.getString(cursor.getColumnIndex(DataInfo.REMIND_ID)));
             remindData.setSwitch1(cursor.getString(cursor.getColumnIndex(DataInfo.SWITCH)));
+            remindData.setNumber(cursor.getInt(cursor.getColumnIndex(DataInfo.NUMBER)));
             list.add(remindData);
         }
         cursor.close();
@@ -287,5 +289,12 @@ public class DataHelper extends SQLiteOpenHelper {
         db.execSQL(DataInfo.CREATE_REMINDDATA);
         db.close();
 
+    }
+
+    public void deleteByDayAndId(String dayofMonth, String id){
+        db = getWritableDatabase();
+        String whereClause = "day=? and remindId=?";
+        String[] whereArgs = new String[]{dayofMonth,id};
+        db.delete(DataInfo.TABLE_REMIND_DATA,whereClause,whereArgs);
     }
 }

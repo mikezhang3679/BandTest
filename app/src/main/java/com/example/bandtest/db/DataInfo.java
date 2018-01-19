@@ -7,7 +7,7 @@ package com.example.bandtest.db;
 public class DataInfo {
     //Database Info
     public static String DATABASE_NAME = "Database.db";
-    public static int DATABASE_VERSION = 1;
+    public static int DATABASE_VERSION = 2;
 
     //Table Names
     public static String TABLE_CURRENT_DATA="currentData";//实时数据(计步、卡路里、睡眠值)
@@ -31,12 +31,12 @@ public class DataInfo {
     public static String MACADDRESS = "macAddress";
 
     //祈祷表
-    public static String NUMBER = "number";
+    public static String DAY = "day";
     public static String TIME = "time";
     public static String REPEAT = "REPEAT";
     public static String REMIND_ID = "remindId";
     public static String SWITCH = "switch";
-
+    public static String NUMBER = "number";
 
 
 
@@ -79,10 +79,11 @@ public class DataInfo {
 
     public static final String CREATE_REMINDDATA = "create table "+TABLE_REMIND_DATA+
             "("+
-            NUMBER+" varchar,"+
+            DAY+" varchar,"+
             TIME+" varchar,"+
             REPEAT+" varchar,"+
             REMIND_ID+" varchar,"+
-            SWITCH+" varchar"+");"
+            SWITCH+" varchar,"+
+            NUMBER+" varchar"+");"
             ;
 }

@@ -377,7 +377,7 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
 
 
     @Override
-    public void returnDate(int year, int month, int dayOfMonth) {
+    public void returnDate(int year, int month, int dayOfMonth,boolean showTime) {
 
     }
 
@@ -387,7 +387,7 @@ public class MainActivity extends AppCompatActivity implements CustomDateDialogF
             case R.id.changeDateBtn:
                 //Select date for getting Steps,Distance,Burnt Calaries from Band SDK
                 CustomDateDialogFragment f = new CustomDateDialogFragment();
-                f.setListener(MainActivity.this);
+                f.setListener(MainActivity.this,true);
                 f.show(getSupportFragmentManager(), "dialog");
                 break;
             case R.id.setReminderBtn:

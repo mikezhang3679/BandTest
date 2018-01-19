@@ -695,7 +695,20 @@ public class CommandManager {
         broadcastData(data);
     }
 
-
+    public void deletePray(int month, int dayOfMonth, int id, int sw) {
+        byte[] data = new byte[10];
+        data[0] = (byte) 0xAB;
+        data[1] = (byte) 0;
+        data[2] = (byte)7;
+        data[3] = (byte) 0xff;
+        data[4] = (byte) 0x97;
+        data[5] = (byte)0x80;
+        data[6] = (byte) month;
+        data[7] = (byte) dayOfMonth;
+        data[8] = (byte) id;
+        data[9] = (byte) sw;
+        broadcastData(data);
+    }
 
     /**
      * sync data from band

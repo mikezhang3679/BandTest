@@ -43,15 +43,48 @@
         android:layout_height="wrap_content"
 
   />
-
-</LinearLayout>
     <Button
-        android:id="@+id/send"
+        android:id="@+id/add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="send"
+        android:text="add"
         />
+</LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:id="@+id/selectTime2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="select time"
+            />
+
+        <EditText
+            android:id="@+id/remindId2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="ID 0~4"
+            android:inputType="number"
+            />
+
+
+
+        <Button
+            android:id="@+id/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="delete"
+            />
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"

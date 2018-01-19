@@ -12,16 +12,17 @@ import java.util.Calendar;
 
 
 public class CustomDateDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener{
-
+    private boolean showTime;
     public interface dateListener{
-        void returnDate(int year, int month, int dayOfMonth);
+        void returnDate(int year, int month, int dayOfMonth,boolean showTime);
     }
 
     dateListener listener;
 
-    public void setListener(dateListener li)
+    public void setListener(dateListener li,boolean showTime)
     {
         listener=li;
+        this.showTime=showTime;
     }
 
     @NonNull
@@ -40,7 +41,7 @@ public class CustomDateDialogFragment extends DialogFragment implements DatePick
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         if (listener != null)
         {
-            listener.returnDate(year, month, dayOfMonth);
+            listener.returnDate(year, month, dayOfMonth,showTime);
 
         }
 
