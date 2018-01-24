@@ -188,7 +188,7 @@ public class ReminderActivity2 extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-        Log.i(TAG,"Switch State=  " +isChecked);
+
         switch (compoundButton.getId()){
             case R.id.switch1:
                 sw = isChecked? 1:0;
@@ -200,7 +200,7 @@ public class ReminderActivity2 extends AppCompatActivity implements View.OnClick
                 break;
         }
 
-
+        Log.i(TAG,"Switch State=  " +isChecked +"sw: "+sw+"  sw2: "+sw2);
 
 
 
